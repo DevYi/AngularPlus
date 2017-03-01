@@ -1,0 +1,74 @@
+<!-- layout -->
+<div class="hbox hbox-auto-xs bg-light " ng-init="
+  app.settings.asideFixed = true;
+  app.settings.asideDock = false;
+  app.settings.container = false;
+  app.hideAside = false;
+  app.hideFooter = true;
+  " ng-controller="NoteCtrl">
+  <div class="col w-large lt b-r">
+    <div class="vbox">
+      <div class="wrapper">
+        <a href class="pull-right btn btn-sm btn-info m-t-n-xs" ng-click="createNote()">添 加</a>
+        <div class="h4">便笺</div>
+      </div>
+      <div class="wrapper b-t m-t-xxs">
+        <div class="input-group">
+          <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control input-sm" placeholder="查找便笺" ng-model="query">
+        </div>
+      </div>
+
+      <div class="row-row">
+        <div class="cell scrollable hover">
+          <div class="cell-inner">
+            <div class="padder">
+              <div class="list-group">
+                <div ng-repeat="note in notes | filter:query | orderBy:'date':true" class="list-group-item b-l-{{note.color}} b-l-3x hover-anchor" ng-class="{'hover': note.selected }" ng-click="selectNote(note)">
+
+                <div class="i-checkbox active" style="width:20px;height:20px">
+                  <input type="checkbox" class="pull-left new-checkbox" ng-model="note.completed">
+                  <i class="cb"></i>
+                  <i ng-show="note.completed" class="fa fa-check text-success text-active cb1"></i>
+                </div>
+
+                  <span ng-click='deleteNote(note)' class="pull-right text-muted hover-action"><i class="fa fa-times"></i></span>
+                  <span class="block text-ellipsis" ng-class="{completed: note.completed}" style="margin-left:25px;">{{ note.content ? note.content : '添加新便笺' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <a  class="pull-left btn btn-sm btn-default m-t-n-xs m-b-md">总共{{notes.length}}条</a>
+        <a  class="pull-right btn btn-sm btn-default m-t-n-xs m-b-md" ng-click="clear(note)" ng-show="show()">清空已完成</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="vbox">
+      <div class="wrapper bg-light lt b-b">
+        <span class="text-muted">创建于:</span> <span>{{ note.date  | date:'MMM-dd-yyyy H:mm' }}</span>
+        <div class="m-l inline dropdown" dropdown>
+          <a class="v-middle pos-rlt inline bg-{{note.color}}" dropdown-toggle style="width:16px;height:16px;top:-2px"></a>
+          <div class="dropdown-menu animated fadeInUp w wrapper">
+            <a ng-repeat="color in colors" class="inline m-xs bg-{{color}}" style="width:18px;height:18px" ng-click="note.color = color"></a>
+          </div>
+        </div>
+      </div>
+      <div class="row-row">
+        <div class="cell">
+          <div class="cell-inner">
+            <textarea class="form-control no-radius no-border no-bg wrapper-lg text-md" style="height:100%;" ng-model="note.content">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- / layout -->
